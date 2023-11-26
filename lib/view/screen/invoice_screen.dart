@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class InvoiceScreen extends StatelessWidget {
-  const InvoiceScreen({super.key});
+  Map<String, dynamic> formValues;
+
+  InvoiceScreen(this.formValues, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -13,10 +15,8 @@ class InvoiceScreen extends StatelessWidget {
   _body() {
     return SafeArea(
         child: Column(
-      children: [
-
-      ],
-    ));
+          children:formValues.values.map((e) => Text("$e")).toList(),
+        ));
   }
 }
 

@@ -31,6 +31,9 @@ errorToast({required String errorMessage}) {
       textColor: Colors.white);
 }
 
+BoxDecoration get defaultBoxDecoration => BoxDecoration(
+    border: Border.all(color: Colors.grey),
+    borderRadius: BorderRadius.circular(8));
+
 final TextEditingController emailInputController = TextEditingController();
 final TextEditingController passInputController = TextEditingController();
-

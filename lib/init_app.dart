@@ -3,6 +3,6 @@ import 'package:ess_assignment_project/controller/feedback_controller.dart';
 import 'package:get/get.dart';
 
 Future<void> initApp() async {
-  Get.lazyPut(() => FeedBackController(), fenix: true);
-  Get.lazyPut(() => CustomOrderController(), fenix: true);
+  Get.put(FeedBackController());
+  Get.put(CustomOrderController());
 }

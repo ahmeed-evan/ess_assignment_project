@@ -111,7 +111,6 @@ class CustomOrder extends StatelessWidget {
                   .toList(),
               onChanged: (value) {
                 formData[key] = value;
-                _getValuesFromCSVFile(value as int);
               },
             ),
           );
@@ -121,9 +120,6 @@ class CustomOrder extends StatelessWidget {
           formFields.add(_viewTextFiled(key, properties!,dynamicFormData));
           break;
 
-        case 'imageView':
-          formFields.add(imageViewFiled(properties!));
-          break;
         case 'numberText':
           formFields.add(numberTextFiled(properties!));
           break;
@@ -134,17 +130,6 @@ class CustomOrder extends StatelessWidget {
     }
 
     return formFields;
-  }
-
-  Widget imageViewFiled(Properties properties) {
-    return Obx(() => SizedBox(
-          height: 140,
-          width: 140,
-          child: Get.find<CustomOrderController>().imageUrl.value == ""
-              ? Image.network(properties.defaultValue, fit: BoxFit.fill)
-              : Image.network(Get.find<CustomOrderController>().imageUrl.value,
-                  fit: BoxFit.fitWidth),
-        ));
   }
 
   _floatingButton() {
@@ -170,20 +155,8 @@ class CustomOrder extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(properties?.label ?? ""),
-            Text(key == "viewText_1"
-                ? Get.find<CustomOrderController>().retailsUnitPrice.value
-                : Get.find<CustomOrderController>().cupEquivalentUnit.value)
           ],
         ));
-  }
-
-  void _getValuesFromCSVFile(int value) {
-    Get.find<CustomOrderController>().retailsUnitPrice.value =
-        Get.find<CustomOrderController>().getValue("RetailPriceUnit", value);
-    Get.find<CustomOrderController>().cupEquivalentUnit.value =
-        Get.find<CustomOrderController>().getValue("CupEquivalentUnit", value);
-    Get.find<CustomOrderController>().imageUrl.value =
-        Get.find<CustomOrderController>().getValue("ProductImage", value);
   }
 }
 
@@ -204,3 +177,5 @@ _unitLayout() {
     ],
   );
 }
+
+

@@ -8,9 +8,7 @@ import '../model/form_data.dart';
 
 class CustomOrderController extends GetxController {
   late List<List<dynamic>> csvFile;
-  final retailsUnitPrice = "".obs;
-  final cupEquivalentUnit = "".obs;
-  final imageUrl = "".obs;
+  late DynamicFormData dynamicFormData;
 
   Future<DynamicFormData> loadFormData() async {
     final jsonString = await rootBundle.loadString("assets/api_reponse.json");
@@ -42,7 +40,7 @@ class CustomOrderController extends GetxController {
   @override
   void onInit() async {
     csvFile = await loadCSV();
-    print(csvFile);
+    dynamicFormData = await loadFormData();
     super.onInit();
   }
 }
