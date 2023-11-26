@@ -1,8 +1,8 @@
 import 'dart:developer';
 import 'dart:io';
-import 'package:audioplayers/audioplayers.dart';
 import 'package:ess_assignment_project/utils.dart';
 import 'package:ess_assignment_project/view/widget/custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_sound/flutter_sound.dart';
@@ -41,12 +41,10 @@ class _FeedBAckScreenState extends State<FeedBAckScreen> {
   }
 
   _playsAudioFile() async {
-    print("Play");
     await audioPlayer.startPlayer(fromURI: audioFile);
   }
 
   _stopAudioFile() async {
-    print("stop");
     await audioPlayer.stopPlayer();
   }
 
@@ -75,13 +73,15 @@ class _FeedBAckScreenState extends State<FeedBAckScreen> {
   }
 
   @override
-  void dispose() {
-    super.dispose();
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text("Feedback"),
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: const Icon(CupertinoIcons.back),
+        ),
+      ),
       body: _body(),
     );
   }
@@ -98,9 +98,11 @@ class _FeedBAckScreenState extends State<FeedBAckScreen> {
             customSpacerHeight(height: 20),
             _recordAudioLayout(),
             const Spacer(),
-            customButton(buttonText: "Submit", onClickAction: () {
-              Fluttertoast.showToast(msg: "Uploaded to server");
-            })
+            customButton(
+                buttonText: "Submit",
+                onClickAction: () {
+                  Fluttertoast.showToast(msg: "Uploaded to server");
+                })
           ],
         ),
       ),

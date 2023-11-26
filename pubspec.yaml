@@ -36,8 +36,6 @@ dependencies:
   csv:
   image_picker:
   get:
-  record:
-  audioplayers: ^5.2.1
   flutter_sound: ^9.2.13
   permission_handler:
 

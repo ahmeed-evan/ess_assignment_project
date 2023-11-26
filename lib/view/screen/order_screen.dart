@@ -3,12 +3,16 @@ import 'dart:convert';
 import 'package:ess_assignment_project/controller/custom_order_controller.dart';
 import 'package:ess_assignment_project/model/form_data.dart';
 import 'package:ess_assignment_project/utils.dart';
+import 'package:ess_assignment_project/view/screen/home_screen.dart';
 import 'package:ess_assignment_project/view/screen/invoice_screen.dart';
 import 'package:ess_assignment_project/view/widget/custom_button.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class OrderScreen extends StatefulWidget {
+  const OrderScreen({super.key});
+
   @override
   _OrderScreenState createState() => _OrderScreenState();
 }
@@ -22,6 +26,7 @@ class _OrderScreenState extends State<OrderScreen> {
       Get.find<CustomOrderController>().dynamicFormData;
   Map<String, dynamic> formData = <String, dynamic>{};
 
+  //try to put it inside getx
   Map<String, dynamic> formValues = {};
 
   void _onSubmit() {
@@ -41,6 +46,15 @@ class _OrderScreenState extends State<OrderScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+            onPressed: () {
+              if (formValues.keys.isEmpty) {
+                Navigator.pop(context);
+              } else {
+                backWarningDialog();
+              }
+            },
+            icon: const Icon(CupertinoIcons.back)),
         centerTitle: true,
         title: Text(dynamicFormData.formName ?? "Order Collection Form"),
       ),
@@ -119,34 +133,6 @@ class _OrderScreenState extends State<OrderScreen> {
     return "Value Not found";
   }
 
-
-
-
-  List<Map<String, dynamic>> formValueMapping = [
-    {
-      "searchList": [
-        {
-          "fieldKey": "list_1",
-          "dataColumn": "ProductCode",
-        },
-      ],
-      "displayList": [
-        {
-          "fieldKey": "viewText_1",
-          "dataColumn": "RetailPriceUnit",
-        },
-        {
-          "fieldKey": "viewText_2",
-          "dataColumn": "CupEquivalentUnit",
-        },
-        {
-          "fieldKey": "image_1",
-          "dataColumn": "ProductImage",
-        },
-      ],
-    },
-  ];
-
   Widget _customTextInputField(Fields field) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10),
@@ -188,7 +174,7 @@ class _OrderScreenState extends State<OrderScreen> {
             "${field.properties?.label} :: ",
           ),
           Text(
-            "${formValues[field.key]}",
+            "${formValues[field.key] ?? ""}",
           )
         ],
       ),
@@ -243,7 +229,7 @@ class _OrderScreenState extends State<OrderScreen> {
         }).toList(),
         onChanged: (value) {
           setState(() {
-            formValues[field.key!] = value;
+            formValues[field.key!] = getNameByValue(listItems, value as int);
             updateValueMapping(field.key!, value);
           });
         },
@@ -258,5 +244,58 @@ class _OrderScreenState extends State<OrderScreen> {
 
   Widget _placeOrderButton() {
     return customButton(buttonText: "Place Order", onClickAction: _onSubmit);
+  }
+
+  String? getNameByValue(List<Map<dynamic, dynamic>> list, int targetValue) {
+    for (var fruit in list) {
+      if (fruit["value"] == targetValue) {
+        return fruit["name"];
+      }
+    }
+    return null; // Return null if no match is found
+  }
+
+  Future backWarningDialog() {
+    return showDialog(
+      context: context,
+      builder: (context) {
+        return SizedBox(
+          width: MediaQuery.of(context).size.width,
+          child: AlertDialog(
+            title: const Text("Unsaved data will be removed"),
+            actionsAlignment: MainAxisAlignment.center,
+            actions: [
+              Padding(
+                padding:
+                    const EdgeInsets.only(left: 16.0, right: 16, bottom: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Expanded(
+                      child: ElevatedButton(
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                          child: const Text("Ok")),
+                    ),
+                    customSpacerWidth(width: 4),
+                    Expanded(
+                        child: ElevatedButton(
+                            onPressed: () {
+                              Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomeScreen()),
+                                  (route) => false);
+                            },
+                            child: const Text("Home")))
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 }

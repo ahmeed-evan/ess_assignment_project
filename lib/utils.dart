@@ -31,6 +31,17 @@ errorToast({required String errorMessage}) {
       textColor: Colors.white);
 }
 
+ThemeData get themeData => ThemeData(
+    colorScheme: ColorScheme.fromSeed(seedColor: Colors.blueAccent),
+    useMaterial3: true,
+    appBarTheme: AppBarTheme(
+      backgroundColor: Colors.white,
+      titleTextStyle: defaultTextStyle,
+      elevation: 2,
+      iconTheme: const IconThemeData(color: Colors.black),
+      centerTitle: true
+    ));
+
 BoxDecoration get defaultBoxDecoration => BoxDecoration(
     border: Border.all(color: Colors.grey),
     borderRadius: BorderRadius.circular(8));

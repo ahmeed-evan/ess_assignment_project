@@ -1,4 +1,5 @@
 import 'package:ess_assignment_project/init_app.dart';
+import 'package:ess_assignment_project/utils.dart';
 import 'package:ess_assignment_project/view/screen/home_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -14,10 +15,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: themeData,
       home:  HomeScreen(),
     );
   }
