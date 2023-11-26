@@ -7,8 +7,8 @@ import 'package:get/get.dart';
 import '../model/form_data.dart';
 
 class CustomOrderController extends GetxController {
-  late List<List> csvFile;
-  final retailsUnitPrice = ''.obs;
+  late List<List<dynamic>> csvFile;
+  final retailsUnitPrice = "".obs;
   final cupEquivalentUnit = "".obs;
   final imageUrl = "".obs;
 
@@ -28,18 +28,16 @@ class CustomOrderController extends GetxController {
     // Get the index of the ProductCode column
     int productCodeIndex = csvFile[0].indexOf("ProductCode");
 
-    // Get the index of the RetailPriceUnit column
     int columnIndex = csvFile[0].indexOf(columnName);
 
     // Iterate through the products to find the desired entry
     for (int i = 1; i < csvFile.length; i++) {
       if (csvFile[i][productCodeIndex] == productCode) {
-        return retailsUnitPrice.value = csvFile[i][columnIndex].toString();
+        return csvFile[i][columnIndex].toString();
       }
     }
     return "Value Not Found";
   }
-
 
   @override
   void onInit() async {

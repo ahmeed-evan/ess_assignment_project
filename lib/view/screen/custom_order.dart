@@ -111,16 +111,14 @@ class CustomOrder extends StatelessWidget {
                   .toList(),
               onChanged: (value) {
                 formData[key] = value;
-                  
-                    Get.find<CustomOrderController>()
-                        .getValue("RetailPriceUnit", value as int);
+                _getValuesFromCSVFile(value as int);
               },
             ),
           );
           break;
 
         case 'viewText':
-          formFields.add(_viewTextFiled(key, properties!));
+          formFields.add(_viewTextFiled(key, properties!,dynamicFormData));
           break;
 
         case 'imageView':
@@ -164,7 +162,9 @@ class CustomOrder extends StatelessWidget {
     );
   }
 
-  Widget _viewTextFiled(String key, Properties properties) {
+  Widget _viewTextFiled(String key, Properties properties,DynamicFormData dynamicFormData) {
+
+    Get.find<CustomOrderController>().getValue("",1);
     return Obx(() => Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -175,6 +175,15 @@ class CustomOrder extends StatelessWidget {
                 : Get.find<CustomOrderController>().cupEquivalentUnit.value)
           ],
         ));
+  }
+
+  void _getValuesFromCSVFile(int value) {
+    Get.find<CustomOrderController>().retailsUnitPrice.value =
+        Get.find<CustomOrderController>().getValue("RetailPriceUnit", value);
+    Get.find<CustomOrderController>().cupEquivalentUnit.value =
+        Get.find<CustomOrderController>().getValue("CupEquivalentUnit", value);
+    Get.find<CustomOrderController>().imageUrl.value =
+        Get.find<CustomOrderController>().getValue("ProductImage", value);
   }
 }
 

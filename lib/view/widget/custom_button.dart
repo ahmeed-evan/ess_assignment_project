@@ -2,7 +2,7 @@ import 'package:ess_assignment_project/utils.dart';
 import 'package:flutter/material.dart';
 
 Widget customButton(
-    {required String buttonText, required Function onClickAction}) {
+    {required String buttonText, required onClickAction}) {
   return SizedBox(
     width: double.infinity,
     height: 48,
