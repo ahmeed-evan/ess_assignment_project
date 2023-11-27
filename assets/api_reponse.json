@@ -13,7 +13,7 @@
             "hintText": "ex : Puran dhaka",
             "minLength": 0,
             "maxLength": 150,
-            "label": "Write your address"
+            "label": "Your address"
           }
         },
         {
