@@ -38,6 +38,10 @@ dependencies:
   get:
   flutter_sound: ^9.2.13
   permission_handler:
+  path_provider:
+  pdf:
+  syncfusion_flutter_pdfviewer: any
+  mailer:
 
 
   # The following adds the Cupertino Icons font to your application.
