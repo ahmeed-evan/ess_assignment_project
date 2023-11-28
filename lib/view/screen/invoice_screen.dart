@@ -38,7 +38,9 @@ class InvoiceScreen extends StatelessWidget {
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         child: Column(
           children: [
-            ...formValues.keys.map((key) => _itemInfoLayout(key)).toList(),
+            ...formValues.keys.map((key) {
+              return _itemInfoLayout(key);
+            }).toList(),
             customSpacerHeight(height: 40),
             const Spacer(),
             Row(
@@ -46,15 +48,19 @@ class InvoiceScreen extends StatelessWidget {
                 Expanded(
                     child: customButton(
                         buttonText: "Save Invoice",
-                        onClickAction: () async{
-                          await Get.find<InvoiceController>().savePdf(pdfMap);
+                        onClickAction: () async {
+                          print(pdfMap);
+                          await Get.find<InvoiceController>()
+                              .savePdfInLocalStorage(pdfMap);
                         })),
                 customSpacerWidth(width: 8),
                 Expanded(
                     child: customButton(
-                        buttonText: "Send Mail", onClickAction: () {
-                          Get.find<InvoiceController>().sendEmailWithAttachment();
-                    })),
+                        buttonText: "Send Mail",
+                        onClickAction: () {
+                          Get.find<InvoiceController>()
+                              .sendInvoiceToUser(pdfMap);
+                        })),
               ],
             ),
           ],
@@ -77,6 +83,7 @@ class InvoiceScreen extends StatelessWidget {
   }
 
   Widget _itemInfoLayout(String key) {
+    pdfMap[getLabelByKey(key)??""] = formValues[key];
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
