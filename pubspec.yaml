@@ -43,6 +43,7 @@ dependencies:
   syncfusion_flutter_pdfviewer:
   mailer:
   device_info_plus:
+  printing:
 
 
   # The following adds the Cupertino Icons font to your application.

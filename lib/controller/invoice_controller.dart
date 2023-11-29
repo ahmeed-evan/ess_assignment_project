@@ -1,15 +1,18 @@
 import 'dart:io';
 import 'dart:typed_data';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/painting.dart';
 import 'package:get/get.dart';
 import 'package:mailer/mailer.dart';
 import 'package:mailer/smtp_server.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:permission_handler/permission_handler.dart';
+import 'package:printing/printing.dart';
 
 class InvoiceController extends GetxController {
   File? pdfFile;
+  pw.ImageProvider? image;
 
   Future<void> sendInvoiceToUser(Map<String, dynamic> pdfMap) async {
     final tempPath = await _getTempPath();
@@ -58,15 +61,26 @@ class InvoiceController extends GetxController {
 
   pw.TableRow _itemInfoLayout(Map<String, dynamic> pdfMap, String key) {
     return pw.TableRow(children: [
-      pw.Text(key.toString(),
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
-      pw.Text(pdfMap[key].toString(),
-          style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      pw.Expanded(
+        child: pw.Text(key.toString(),
+            style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
+      pw.SizedBox(width: 20),
+      pw.Expanded(
+        child: key == "Upload your image"
+            ? pw.Image(
+                image!,
+                height: 90,
+                width: 90,
+              )
+            : pw.Text(pdfMap[key].toString(),
+                style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
+      ),
     ]);
   }
 
   Future<void> _savePdf(String filePath, Map<String, dynamic> pdfMap) async {
-    print(pdfMap);
+    image = await _getImage(pdfMap["Upload your image"]);
     pw.Document pdf = pw.Document();
     pdf.addPage(pw.Page(
       build: (context) => pw.Table(
@@ -123,5 +137,14 @@ class InvoiceController extends GetxController {
       print("Cannot get download folder path");
     }
     return directory?.path;
+  }
+
+  _getImage(String imageUrl) async {
+    try {
+      return await flutterImageProvider(NetworkImage(imageUrl));
+    } catch (e) {
+      print("****ERROR: $e****");
+      return;
+    }
   }
 }
